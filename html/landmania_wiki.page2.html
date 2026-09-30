@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Hub | Landmania Internal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --bg-neutral: #fafaf9;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-neutral);
+            color: #1c1917;
+        }
+
+        .markdown-body h1 { @apply text-3xl font-extrabold mb-6 text-stone-900 border-b-4 border-indigo-100 pb-2; }
+        .markdown-body h2 { @apply text-xl font-bold mt-10 mb-4 text-stone-800 flex items-center gap-2; }
+        .markdown-body h2::before { content: ""; @apply w-1 h-6 bg-indigo-500 rounded-full inline-block; }
+        .markdown-body p { @apply text-stone-600 leading-relaxed mb-4 text-base; }
+        .markdown-body code { @apply bg-stone-100 text-indigo-600 px-1.5 py-0.5 rounded font-mono text-sm border border-stone-200; }
+        .markdown-body pre { @apply bg-stone-900 text-stone-100 p-5 rounded-2xl overflow-x-auto my-6 font-mono text-xs leading-relaxed shadow-xl border-l-4 border-indigo-500; }
+        .markdown-body ul { @apply list-none space-y-3 text-stone-600 mb-6 ml-2; }
+        .markdown-body ul li { @apply flex items-start gap-3; }
+        .markdown-body ul li::before { content: "→"; @apply text-indigo-500 font-bold; }
+        
+        .markdown-body table { @apply w-full border-collapse mb-8 rounded-xl overflow-hidden shadow-sm border border-stone-200; }
+        .markdown-body th { @apply bg-stone-50 p-3 text-left text-xs font-bold uppercase tracking-wider text-stone-500 border-b border-stone-200; }
+        .markdown-body td { @apply p-3 text-sm text-stone-600 border-b border-stone-100 bg-white; }
+
+        .sidebar-item-active {
+            @apply bg-indigo-600 text-white shadow-lg shadow-indigo-200 rounded-lg translate-x-1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e7e5e4; border-radius: 10px; }
+
+        .status-pill { @apply px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tighter; }
+        .status-online { @apply bg-green-100 text-green-700; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden bg-stone-50">
+
+    <!-- Sidebar -->
+    <aside class="w-80 border-r border-stone-200 bg-white flex flex-col z-20 shrink-0">
+        <div class="p-8 border-b border-stone-100">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-blue-700 rounded-xl flex items-center justify-center text-white shadow-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-stone-900 leading-none text-lg">LANDMANIA</h1>
+                    <span class="text-[10px] font-bold text-indigo-500 tracking-[0.2em] uppercase">Tech Wiki</span>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <input type="text" id="docSearch" placeholder="Filter knowledge..." class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 pl-10 pr-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto custom-scrollbar px-4 py-6" id="sideNav">
+            <!-- Populated via JS -->
+        </nav>
+
+        <div class="p-6 bg-stone-900 text-white mx-4 mb-6 rounded-2xl shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <span class="status-pill status-online">Operational</span>
+                <span class="text-[10px] font-mono opacity-50">LACP-01: ACTIVE</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-white/10 rounded-lg">
+                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-bold">TrendNet ↔ Sodola</p>
+                    <p class="text-[10px] opacity-60">10Gbps Balanced Link</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex overflow-hidden">
+        
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-8 md:p-16">
+            <div id="contentWrapper" class="max-w-4xl mx-auto opacity-0 translate-y-4 transition-all duration-500">
+                <div class="flex items-center gap-2 text-[10px] text-indigo-500 font-bold uppercase tracking-[0.2em] mb-4">
+                    <span id="breadcrumbCategory">Overview</span>
+                </div>
+
+                <header class="mb-12">
+                    <h2 class="text-5xl font-black text-stone-900 tracking-tight mb-4" id="docTitle">Project Dashboard</h2>
+                    <p class="text-xl text-stone-500 leading-relaxed" id="docSubtitle">Select a module to view recovery logs, cabling standards, and 10G infrastructure.</p>
+                </header>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm group hover:border-indigo-300 transition-colors">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-2">Technical Depth</div>
+                        <div class="text-2xl font-bold text-stone-800" id="statComplexity">-</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm group hover:border-indigo-300 transition-colors">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-2">Read Time</div>
+                        <div class="text-2xl font-bold text-indigo-600" id="statReadTime">-</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm group hover:border-indigo-300 transition-colors">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-2">Status</div>
+                        <div class="text-2xl font-bold text-stone-800">Verified</div>
+                    </div>
+                </div>
+
+                <article class="markdown-body" id="contentArea">
+                    <!-- Loaded via JS -->
+                </article>
+            </div>
+        </div>
+
+        <!-- Right Radar Panel -->
+        <aside class="w-96 border-l border-stone-200 bg-white/50 backdrop-blur-xl p-8 hidden xl:block overflow-y-auto custom-scrollbar">
+            <h3 class="text-xs font-black text-stone-400 uppercase tracking-[0.2em] mb-8 border-b border-stone-100 pb-4">Content Footprint</h3>
+            
+            <div class="mb-12 bg-white p-6 rounded-3xl shadow-sm border border-stone-100">
+                <div class="h-64 w-full">
+                    <canvas id="docChart"></canvas>
+                </div>
+            </div>
+
+            <div class="space-y-10">
+                <section>
+                    <h4 class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">Core Takeaways</h4>
+                    <ul class="space-y-4" id="takeawaysList">
+                        <!-- Loaded via JS -->
+                    </ul>
+                </section>
+
+                <section class="p-6 bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl text-white">
+                    <h4 class="text-xs font-bold text-indigo-400 uppercase mb-2">Lab Milestone</h4>
+                    <p class="text-xs text-stone-300 leading-relaxed mb-4">LACP active between Sodola and TrendNet. This resolves the bottleneck for high-concurrency node discovery.</p>
+                    <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                        <div class="bg-indigo-500 h-full w-[85%]"></div>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        const docs = [
+            {
+                id: 'vlan',
+                category: 'Network Ops',
+                title: 'VLAN Recovery & Orbi Fix',
+                subtitle: 'Steps taken to restore WAN flow through the TrendNet Switch.',
+                complexity: 'High',
+                readTime: '12 min',
+                chartData: [90, 20, 40, 60], // Networking, Hardware, Storage, Ops
+                takeaways: [
+                    'PVID 10 must be untagged for Xfinity <-> Orbi handoff.',
+                    'STP Guardrail prevents "Self-Block" loops on Orbi WAN.',
+                    'Direct bypass confirmed hardware health before switch re-config.'
+                ],
+                content: `
+                    <h1>VLAN Recovery & STP Alignment</h1>
+                    <p>When the network dropped, the primary culprit was a PVID reset on the TrendNet ports, causing the Orbi WAN to attempt communication on a tagged VLAN it didn't recognize.</p>
+                    
+                    <table>
+                        <thead><tr><th>Port</th><th>VLAN</th><th>Target</th><th>Mode</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-3</td><td>10</td><td>WAN / LAN</td><td>Untagged/Trunk</td></tr>
+                            <tr><td>4</td><td>30</td><td>Stream (10G)</td><td>Access/Tagged</td></tr>
+                            <tr><td>5</td><td>20</td><td>Management</td><td>Access/Tagged</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>The Spanning Tree Fix</h2>
+                    <p>Because the Orbi Mesh system performs its own loop detection, we had to disable <strong>BPDU Filtering</strong> on the WAN-facing ports to ensure the Orbi didn't enter a "self-blocked" state.</p>
+
+                    <pre># TrendNet CLI Configuration
+configure
+vlan 10
+  interface ethernet 1/1-1/3
+  switchport mode trunk
+exit
+spanning-tree edge-port 1/1
+copy running-config startup-config</pre>
+                `
+            },
+            {
+                id: 'hardware',
+                category: 'Hardware',
+                title: 'Sodola & Asus 10G Nodes',
+                subtitle: 'Specifications and LACP Bonding for the compute cluster.',
+                complexity: 'Moderate',
+                readTime: '7 min',
+                chartData: [30, 95, 20, 40],
+                takeaways: [
+                    'LACP (802.3ad) provides 20Gbps aggregate backplane.',
+                    'Sodola 10G Switch acts as the leaf for high-perf nodes.',
+                    'Asus node handles coordinate-to-node routing lookups.'
+                ],
+                content: `
+                    <h1>10G Compute & LACP Configuration</h1>
+                    <p>The <strong>Sodola</strong> has been successfully linked to the <strong>TrendNet</strong> via an LACP bond. This allows for redundancy and doubled throughput for the internal node discovery service.</p>
+                    
+                    <h2>Termination Standards</h2>
+                    <p>All new runs, including the office extension, utilize <strong>Cat6a</strong> shielded cabling, terminated to T568B standards. TDR traces show <0.5dB loss across the 50ft run.</p>
+
+                    <h2>Node Roles</h2>
+                    <ul>
+                        <li><strong>Sodola Switch:</strong> 10G Leaf Switch. Handles the high-speed backend.</li>
+                        <li><strong>Asus Pro:</strong> Primary Compute node for NMAP parsing.</li>
+                        <li><strong>TrendNet:</strong> Core Switch. Manages VLAN routing and external gateway access.</li>
+                    </ul>
+
+                    <pre># Verify LACP on TrendNet
+show lacp aggregator 1
+# Output: Status: Active, Speed: 20000 Mbps (Full Duplex)</pre>
+                `
+            },
+            {
+                id: 'cabling',
+                category: 'Infrastructure',
+                title: 'Cabling & Termination Log',
+                subtitle: 'Physical layer documentation and office jack extensions.',
+                complexity: 'Low',
+                readTime: '4 min',
+                chartData: [10, 80, 50, 10],
+                takeaways: [
+                    'T568B Pinout used consistently across the lab.',
+                    'TDR testing confirmed zero cable faults on new 10G run.',
+                    'Office extension now carries full 10Gbps link to Sodola.'
+                ],
+                content: `
+                    <h1>Physical Layer Infrastructure</h1>
+                    <p>Recent work focused on expanding the physical footprint of the 10G network into the remote office space.</p>
+                    
+                    <h2>Office Extension</h2>
+                    <p>A new Cat6a run was pulled through the conduit. Due to the proximity of power lines, shielded cable was required to maintain 10G speeds without interference.</p>
+
+                    <h2>Termination Checklist</h2>
+                    <ul>
+                        <li>Verify cable twist is maintained within 1/2 inch of termination.</li>
+                        <li>Ground the shield at the patch panel side only.</li>
+                        <li>Label both ends: <code>LAB-CORE-01</code> to <code>OFF-JACK-01</code>.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let chart = null;
+
+        function renderNav() {
+            const nav = document.getElementById('sideNav');
+            const cats = [...new Set(docs.map(d => d.category))];
+            nav.innerHTML = cats.map(cat => `
+                <div class="mb-8">
+                    <div class="px-4 text-[10px] font-black text-stone-400 uppercase tracking-[0.2em] mb-4">${cat}</div>
+                    <div class="space-y-1">
+                        ${docs.filter(d => d.category === cat).map(d => `
+                            <button onclick="loadDoc('${d.id}')" id="nav-${d.id}" class="w-full text-left px-4 py-3 text-sm text-stone-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition-all flex items-center gap-3 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-stone-300 group-hover:bg-indigo-400 transition-colors"></div>
+                                <span class="font-bold">${d.title}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadDoc(id) {
+            const doc = docs.find(d => d.id === id);
+            const wrapper = document.getElementById('contentWrapper');
+            
+            wrapper.classList.remove('opacity-100', 'translate-y-0');
+            wrapper.classList.add('opacity-0', 'translate-y-4');
+
+            setTimeout(() => {
+                document.querySelectorAll('#sideNav button').forEach(b => b.className = b.className.replace('sidebar-item-active', '').replace('text-white', 'text-stone-600'));
+                const activeBtn = document.getElementById(`nav-${id}`);
+                activeBtn.className += " sidebar-item-active text-white";
+
+                document.getElementById('breadcrumbCategory').textContent = doc.category;
+                document.getElementById('docTitle').textContent = doc.title;
+                document.getElementById('docSubtitle').textContent = doc.subtitle;
+                document.getElementById('statComplexity').textContent = doc.complexity;
+                document.getElementById('statReadTime').textContent = doc.readTime;
+                document.getElementById('contentArea').innerHTML = doc.content;
+
+                document.getElementById('takeawaysList').innerHTML = doc.takeaways.map(t => `
+                    <li class="flex gap-4 text-xs text-stone-600 leading-relaxed">
+                        <svg class="w-4 h-4 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>${t}</span>
+                    </li>
+                `).join('');
+
+                updateChart(doc.chartData);
+                
+                wrapper.classList.remove('opacity-0', 'translate-y-4');
+                wrapper.classList.add('opacity-100', 'translate-y-0');
+            }, 300);
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('docChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Network', 'Hardware', 'Storage', 'Ops'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        borderColor: '#4f46e5',
+                        pointBackgroundColor: '#4f46e5',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: { display: false },
+                            grid: { color: '#f5f5f4' },
+                            angleLines: { color: '#f5f5f4' },
+                            pointLabels: { font: { size: 9, weight: 'bold', family: 'Plus Jakarta Sans' }, color: '#a8a29e' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(data) {
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        renderNav();
+        initChart();
+        loadDoc('vlan');
+    </script>
+</body>
+</html>

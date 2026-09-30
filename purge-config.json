@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "dashboardTitle": "Network-Dev Purge Console",
+  "actions": [
+    {
+      "id": "pcap-wipe",
+      "category": "networking",
+      "title": "Network Captures",
+      "description": "Stale .pcap and .cap files from Wireshark/tcpdump",
+      "checkPath": "/private/tmp",
+      "pattern": "*.pcap",
+      "checkCommand": "find /private/tmp ~/Downloads -name '*.pcap' -o -name '*.cap' | wc -l",
+      "purgeCommand": "find /private/tmp ~/Downloads -name '*.pcap' -o -name '*.cap' -delete",
+      "dangerLevel": "low"
+    },
+    {
+      "id": "docker-builder",
+      "category": "devops",
+      "title": "Docker Build Cache",
+      "description": "Hidden layers from failed or old image builds",
+      "checkCommand": "docker system df | grep 'Build Cache' | awk '{print $4}'",
+      "purgeCommand": "docker builder prune -af",
+      "dangerLevel": "medium"
+    },
+    {
+      "id": "stale-node",
+      "category": "typescript",
+      "title": "Zombie node_modules",
+      "description": "Folders not touched in 60 days",
+      "checkCommand": "find . -name 'node_modules' -type d -mtime +60 -prune | wc -l",
+      "purgeCommand": "find . -name 'node_modules' -type d -mtime +60 -prune -exec rm -rf {} +",
+      "dangerLevel": "medium"
+    },
+    {
+      "id": "xcode-derived",
+      "category": "dev",
+      "title": "Xcode DerivedData",
+      "description": "Massive build artifacts (safe to delete)",
+      "checkCommand": "du -sh ~/Library/Developer/Xcode/DerivedData | cut -f1",
+      "purgeCommand": "rm -rf ~/Library/Developer/Xcode/DerivedData/*",
+      "dangerLevel": "low"
+    },
+    {
+      "id": "brew-bottles",
+      "category": "system",
+      "title": "Homebrew Cache",
+      "description": "Downloaded .tar.gz files for installs",
+      "checkCommand": "du -sh $(brew --cache) | cut -f1",
+      "purgeCommand": "brew cleanup -s",
+      "dangerLevel": "low"
+    },
+    {
+      "id": "npm-cache",
+      "category": "typescript",
+      "title": "NPM Global Cache",
+      "description": "Cached package binaries",
+      "checkCommand": "du -sh ~/.npm/_cacache | cut -f1",
+      "purgeCommand": "npm cache clean --force",
+      "dangerLevel": "low"
+    },
+    {
+      "id": "ds-store",
+      "category": "system",
+      "title": ".DS_Store Junk",
+      "description": "Metadata files across the drive",
+      "checkCommand": "find . -name '.DS_Store' | wc -l",
+      "purgeCommand": "find . -name '.DS_Store' -type f -delete",
+      "dangerLevel": "low"
+    },
+    {
+      "id": "log-rot",
+      "category": "system",
+      "title": "Rotated Logs",
+      "description": "Compressed old system logs (.gz)",
+      "checkCommand": "find /var/log -name '*.gz' | wc -l",
+      "purgeCommand": "sudo rm -rf /var/log/*.gz",
+      "dangerLevel": "medium"
+    },
+    {
+      "id": "yarn-v4",
+      "category": "typescript",
+      "title": "Yarn Berry Cache",
+      "description": "Unused offline mirrors",
+      "checkCommand": "du -sh ~/Library/Caches/Yarn | cut -f1",
+      "purgeCommand": "yarn cache clean",
+      "dangerLevel": "low"
+    }
+  ]
+}

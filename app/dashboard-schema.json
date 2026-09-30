@@ -1,0 +1,57 @@
+type PurgeAction = {
+  id: string;
+  category: 'system' | 'dev' | 'media';
+  title: string;
+  description: string;
+  checkCommand: string; // Returns size/count
+  purgeCommand: string; // The "Do it" button
+  dangerLevel: 'low' | 'medium' | 'high';
+};
+
+const purgeManifest: PurgeAction[] = [
+  {
+    id: 'xcode-sim',
+    category: 'dev',
+    title: 'iOS Simulators',
+    description: 'Unused runtime data for old iOS versions',
+    checkCommand: "du -sh ~/Library/Developer/CoreSimulator/Devices | cut -f1",
+    purgeCommand: "xcrun simctl delete unavailable",
+    dangerLevel: 'low'
+  },
+  {
+    id: 'stale-node',
+    category: 'dev',
+    title: 'Ghost node_modules',
+    description: 'Unopened in 60+ days',
+    checkCommand: "find . -name 'node_modules' -type d -mtime +60 -prune | wc -l",
+    purgeCommand: "find . -name 'node_modules' -type d -mtime +60 -prune -exec rm -rf {} +",
+    dangerLevel: 'medium'
+  },
+  {
+    id: 'docker-reclaim',
+    category: 'system',
+    title: 'Docker Build Cache',
+    description: 'Layers and dangling images',
+    checkCommand: "docker system df | grep 'Build Cache' | awk '{print $4}'",
+    purgeCommand: "docker builder prune -f",
+    dangerLevel: 'medium'
+  },
+  {
+    id: 'spotify-cache',
+    category: 'media',
+    title: 'Spotify Bloat',
+    description: 'Offline cache and temp data',
+    checkCommand: "du -sh ~/Library/Caches/com.spotify.client | cut -f1",
+    purgeCommand: "rm -rf ~/Library/Caches/com.spotify.client/*",
+    dangerLevel: 'low'
+  },
+  {
+    id: 'yarn-cache',
+    category: 'dev',
+    title: 'Yarn/NPM Global Cache',
+    description: 'Cached package tarballs',
+    checkCommand: "du -sh ~/Library/Caches/yarn | cut -f1",
+    purgeCommand: "yarn cache clean",
+    dangerLevel: 'low'
+  }
+];

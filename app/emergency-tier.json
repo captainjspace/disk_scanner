@@ -1,0 +1,26 @@
+[
+  {
+    "id": "purge_logs",
+    "title": "System Logs",
+    "status": "Critical",
+    "command": "sudo rm -rf /private/var/log/*",
+    "color": "text-red-500",
+    "bg": "bg-red-500/10"
+  },
+  {
+    "id": "purge_cache",
+    "title": "User Caches",
+    "status": "Safe to Clear",
+    "command": "rm -rf ~/Library/Caches/*",
+    "color": "text-orange-500",
+    "bg": "bg-orange-500/10"
+  },
+  {
+    "id": "force_snapshots",
+    "title": "Force Snapshots",
+    "status": "Locked",
+    "command": "sudo tmutil deletelocalsnapshots /",
+    "color": "text-purple-500",
+    "bg": "bg-purple-500/10"
+  }
+]

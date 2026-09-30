@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landmania Network Recovery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; }
+        .code { font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        .vlan-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(79, 70, 229, 0.3); }
+        .command-box { background: #000; border-left: 4px solid #ef4444; padding: 1rem; margin-top: 1rem; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-4xl font-black tracking-tight text-white">Interface <span class="text-red-400">Rescue</span></h1>
+                <p class="text-slate-400 mt-2">Clearing Gateway Conflicts for TrendNet Recovery</p>
+            </div>
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Mac Terminal Surgery -->
+            <div class="vlan-card p-6 rounded-3xl border-red-500/50">
+                <h2 class="text-xl font-bold mb-4 text-red-400 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Step 1: Clean Your Routing Table
+                </h2>
+                <p class="text-sm text-slate-300 mb-4">Your Mac has 3 gateways. We need to kill the ones that aren't the TrendNet.</p>
+                
+                <div class="command-box">
+                    <p class="text-xs text-slate-500 mb-2"># 1. Turn off WiFi to stop the Orbi interference</p>
+                    <p class="code text-green-400">networksetup -setairportpower en0 off</p>
+                    
+                    <p class="text-xs text-slate-500 mt-4 mb-2"># 2. Delete the ghost gateway on en7</p>
+                    <p class="code text-green-400">sudo route delete default 192.168.1.255</p>
+
+                    <p class="text-xs text-slate-500 mt-4 mb-2"># 3. Force the route to the TrendNet UI</p>
+                    <p class="code text-green-400">sudo route add -host 192.168.2.254 192.168.2.2</p>
+                </div>
+            </div>
+
+            <!-- TrendNet UI Recovery -->
+            <div class="vlan-card p-6 rounded-3xl border-indigo-500/50">
+                <h2 class="text-xl font-bold mb-4 text-indigo-400 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Step 2: TrendNet Internal Fix
+                </h2>
+                <p class="text-sm text-slate-300">Once you hit the UI at <span class="font-bold text-white">192.168.2.254</span>:</p>
+                <ul class="mt-4 space-y-3 text-xs text-slate-400">
+                    <li class="flex gap-2"><span class="text-indigo-500">→</span> Go to <strong>L2 Features > VLAN > 802.1Q</strong></li>
+                    <li class="flex gap-2"><span class="text-indigo-500">→</span> Ensure <strong>VLAN 1</strong> is still there.</li>
+                    <li class="flex gap-2"><span class="text-indigo-500">→</span> Ensure your Mac's port is an <strong>Untagged Member</strong> of VLAN 1.</li>
+                    <li class="flex gap-2"><span class="text-indigo-500">→</span> Change <strong>Management VLAN</strong> back to 1.</li>
+                    <li class="flex gap-2"><span class="text-indigo-500">→</span> Set Static IP back to <span class="text-white">192.168.1.254</span>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Final Layout Strategy -->
+        <section class="vlan-card p-8 rounded-3xl bg-slate-800/50">
+            <h3 class="text-2xl font-black mb-6 text-white text-center underline decoration-indigo-500">The "End State" Goal</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-4 bg-slate-900 rounded-2xl border border-slate-700">
+                    <div class="text-indigo-400 font-bold mb-2">VLAN 1 (Main)</div>
+                    <p class="text-[10px] text-slate-500">192.168.1.x</p>
+                    <p class="text-xs mt-2 italic">Orbi, Switches, Trusted PCs, Wired AV</p>
+                </div>
+                <div class="p-4 bg-slate-900 rounded-2xl border border-slate-700">
+                    <div class="text-green-400 font-bold mb-2">VLAN 20 (IoT)</div>
+                    <p class="text-[10px] text-slate-500">192.168.20.x</p>
+                    <p class="text-xs mt-2 italic">Smart Plugs, Thermostats, Cameras</p>
+                </div>
+                <div class="p-4 bg-slate-900 rounded-2xl border border-slate-700">
+                    <div class="text-red-400 font-bold mb-2">VLAN 30 (Guest)</div>
+                    <p class="text-[10px] text-slate-500">192.168.30.x</p>
+                    <p class="text-xs mt-2 italic">Isolated Guest Traffic</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
